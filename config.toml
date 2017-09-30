@@ -1,4 +1,4 @@
-baseURL = "https://encoretechnologies.github.io/"
+baseURL = "//encoretechnologies.github.io"
 languageCode = "en-us"
 title = "Encore Technologies - DevOps Blog"
 theme = "hugo-future-imperfect"
