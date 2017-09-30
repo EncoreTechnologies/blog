@@ -7,7 +7,6 @@ paginate = 3
 disqusShortname = "shortname"
 googleAnalytics = ""
 pluralizeListTitles = false
-publishDir = "docs"
 
 [params]
     # Sets the meta tag description, usually reserved for the main page
