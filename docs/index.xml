@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Encore Technologies - DevOps Blog</title>
+    <link>https://encoretechologies.github.io/</link>
+    <description>Recent content on Encore Technologies - DevOps Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 30 Sep 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://encoretechologies.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>New Blog</title>
+      <link>https://encoretechologies.github.io/blog/2017/09/intro/</link>
+      <pubDate>Sat, 30 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://encoretechologies.github.io/blog/2017/09/intro/</guid>
+      <description>Welcome to the Encore DevOps blog!
+We on the DevOps team have been working for about a year and a half building tons of automation solutions for Encore&amp;rsquo;s Managed Services customers. Up until we haven&amp;rsquo;t had a place to publicly showcase the more technical work that we&amp;rsquo;ve been doing. This blog serves as a new space for our engineers to share their experiences around new an innovating technologies we&amp;rsquo;re exploring.</description>
+    </item>
+    
+  </channel>
+</rss>
