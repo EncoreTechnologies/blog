@@ -1,3 +1,7 @@
+{{ with .Site.Social.website }}
+<li><a href="http://{{.}}/" target="_blank" title="Website" class="fa fa-globe"></a></li>
+{{ end }}
+
 {{ with .Site.Social.github }}
 <li><a href="//github.com/{{.}}" target="_blank" title="GitHub" class="fa fa-github"></a></li>
 {{ end }}
@@ -67,7 +71,7 @@
 {{ end }}
 
 {{ with .Site.Social.linkedin }}
-<li><a href="//linkedin.com/in/{{.}}" target="_blank" title="LinkedIn" class="fa fa-linkedin"></a></li>
+<li><a href="//linkedin.com/company/{{.}}" target="_blank" title="LinkedIn" class="fa fa-linkedin"></a></li>
 {{ end }}
 
 {{ with .Site.Social.slideshare }}
