@@ -16,10 +16,10 @@ type = "post"
 Welcome to the Encore DevOps blog!
 
 We on the DevOps team have been working for about a year and a half building 
-tons of automation solutions for Encore's Managed Services customers. Up until
-we haven't had a place to publicly showcase the more technical work that we've
-been doing. This blog serves as a new space for our engineers to share their
-experiences around new an innovating technologies we're exploring.
+tons of automation solutions for Encore's Managed Services customers. Up until 
+now we haven't had a place to publicly showcase the more technical work that 
+we've been doing. This blog serves as a new space for our engineers to share 
+their experiences around new and innovating technologies we're exploring.
 
 Please stay tuned, and subscribe to our RSS feed on the left!
 
