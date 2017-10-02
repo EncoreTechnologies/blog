@@ -45,6 +45,7 @@ Cincinnati, John started his DevOps career as a Co-op underneath Eric at a previ
 company. Once John graduated UC, he was offered a job at Encore to continue his 
 excellent work.
 
-* [Mike Flora](https://github.com/MikeFlora) - Our ServiceNow guru. Mike is a ServiceNow
-Sr Technical Consultant  with a knack for implementing integrations and automation processes.
+* [Mike Flora](https://github.com/MikeFlora) - Our ServiceNow guru and former IT
+manager for 14 years. Mike is a ServiceNow Sr Technical Consultant with a knack
+for implementing integrations and automation processes.
 
