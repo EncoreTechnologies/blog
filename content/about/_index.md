@@ -30,7 +30,7 @@ in incredible vision and direction.
 While Eric has incredible experiences in IT and Ops, he quickly realized he had a
 gap on the Dev side. In mid-2016 he hired [Nick Maludy](https://github.com/nmaludy)
 to manage the DevOps team. Nick, a graduate of University of Toledo, comes from
-a diverse Software Engineering background allowing him to apply best practives
+a diverse Software Engineering background allowing him to apply best practices
 form the Software Engineering discipline to the DevOps parctices at Encore.
 
 Behind Eric and Nick are a team of great DevOps Engineers including:
