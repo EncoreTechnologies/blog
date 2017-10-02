@@ -36,7 +36,7 @@ form the Software Engineering discipline to the DevOps parctices at Encore.
 Behind Eric and Nick are a team of great DevOps Engineers including:
 
 * [Brad Bishop](https://github.com/bishopbm1) - A graduate of University of 
-Cincinnati, Brad has several years of experience working in a traditional Windows
+Cincinnati, Brad has several years of experience working in traditional Windows
 IT environments. Brad's quickly come up to speed in a mixed OS environment and
 provides unique perspectives to the solutions we deliver to customers.
 
