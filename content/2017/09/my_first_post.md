@@ -14,28 +14,28 @@ type = "post"
 +++
 # Something about ServiceNow
  
-## Shell Commands via MID Server
+## Execute Shell Commands on MID Server
  
-Welcome to my first blog post.
-(It's funny, but the "Smaller Title" is larger than the "Title".)
-
-The ServiceNow MID Server has a built-in feature that allows functionality to be extended to any program/application that can be ran via a shell command on the MID server.
+The ServiceNow MID Server has a built-in feature that allows functionality to be extended to any program/application that can be ran, via a shell command, on the MID server.
 If data is to be returned to the ServiceNow instance, the program merely needs to write to the `stdout`.
 
-The data that is written to `stdout` is captured and returned to the instance, via the ECC Queue, in the response.
+The data that is written to `stdout` is captured and returned to the ServiceNow instance in the response via the ECC Queue.
 
-Therefore, any program/application can merely write a JSON formatted string to `stdout` and the script in the instance will then have access to the data.
+Therefore, any program/application can merely write a JSON formatted string to `stdout` and the data can be made available to the ServiceNow instance.
 
-This is a nice, quick and dirty, way to do a simple integration.
+This is a nice, quick way to do a simple integration.
 
-Example:
-A Python script can be written to query anything, say an SQL database, and return the results to the ServiceNow instance.
+ Example:
+   A Python script can be written to query something, say an SQL database, and return the results to the ServiceNow instance.
+
+-Mike
 
 -----
 # Notes while following the instructions:
 
 Used to clone repo (Windows):
 ```
+Had to use the following to clone the repo.
 git clone https://github.com/EncoreTechnologies/blog.git
 
 The following did not work for me:
