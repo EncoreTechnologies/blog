@@ -24,4 +24,3 @@ their experiences around new and innovating technologies we're exploring.
 Please stay tuned, and subscribe to our RSS feed on the left!
 
 -Nick
-
