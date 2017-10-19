@@ -191,6 +191,7 @@ Notes:
 
 - The disk.backing.datstore needs to be a pyvmomi.vim.Datastore object for the disk to be added properly
 - The controller key can be found by querying for the current controller and getting the key.
+
 ```python
 from pyVmomi import vim
 
@@ -202,6 +203,7 @@ for device in self.vm.config.hardware.device:
             isinstance(device, vim.vm.device.ParaVirtualSCSIController)):
         controllers.append(device)
 ```
+
 - There can be a max of 15 disks per controller.
 - The disk.unitNumber must in the range [0, 6] and [7, 15] (7 is reserved).
 - The disk.unitNumber must be unique with respect to all other disks on the controller (ex: there can only be on disk with disk.unitNumber == 5 on a controller).
