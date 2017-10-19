@@ -205,7 +205,7 @@ for device in self.vm.config.hardware.device:
 ```
 
 - There can be a max of 15 disks per controller.
-- The disk.unitNumber must in the range [0, 6] and [7, 15] (7 is reserved).
+- The disk.unitNumber must in the range [0, 6] and [8, 15] 7 is reserved.
 - The disk.unitNumber must be unique with respect to all other disks on the controller (ex: there can only be on disk with disk.unitNumber == 5 on a controller).
 
 # VMware Controller
