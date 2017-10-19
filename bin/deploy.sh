@@ -22,3 +22,12 @@ git push origin master
 
 # Come Back up to the Project Root
 cd ..
+
+# Update pointer to the submodule
+git add public/
+
+# Commit changes
+git commit -m "$msg"
+
+# Push changes
+git push origin master
