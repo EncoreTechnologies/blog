@@ -2,7 +2,7 @@
 author = "John Schoewe"
 author_url = "https://github.com/jschoewe"
 categories = ["John Schoewe", "Encore"]
-date = "2017-10-19"
+date = "2017-10-23"
 description = "How to use Python and the ServiceNow API to Automatically Create and Update Configuration Items"
 featured = ""
 featuredalt = ""
@@ -25,7 +25,7 @@ NOTE: Before accessing the API, be sure your user role is either web_service_adm
 1. Type "users" in the filter navigator
 2. Click on "Organization" -> "Users"
 3. Click on the user that you want to change
-4. SCroll to the "Roles" section at the bottom and click "Edit"
+4. Scroll to the "Roles" section at the bottom and click "Edit"
 5. Add the role(s) you want to give the user and click "Save"
 
 The picture below shows the REST API Explorer with the endpoint for the request and a drop-down with all the tables that can be used:
@@ -75,8 +75,8 @@ payload = {
 
 # Save the result of the request in a variable
 result = requests.post(url,
-       	 	       json=payload,
-		       headers=headers,
+                       json=payload,
+                       headers=headers,
                        auth=("sn_username", "sn_password"))
 
 # The result will have the sys_id of the new CI
@@ -105,7 +105,7 @@ url = "https://dev12345.service-now.com/api/now/table/{0}/{1}".format(table_name
 headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
 
 # A list of attributes for your table can be found in the API Explorer
-# These	 values will differ depending on  the table
+# These  values will differ depending on  the table
 payload = {
             'install_status': 'Retired',
             'short_description': 'Change the install_status of this CI'
