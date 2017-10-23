@@ -20,7 +20,13 @@ The following is a quick tutorial on using the ServiceNow API with python to pro
 
 Servicenow uses a REST Table API that allows users to perform create, read, update and delete operations on existing tables. ServiceNow also provides you with a REST API Explorer that uses information from your instance to provide you with a list of endpoints, methods, and variables that you can use to build and send a REST request. This explorer can be found by navigating to 'System Web Services' -> 'REST API Explorer'.
 
-NOTE: Before accessing the API, be sure your user role is either web_service_admin, rest_api_explorer, or admin.
+NOTE: Before accessing the API, be sure your user role is either web_service_admin, rest_api_explorer, or admin. If this is not the case, then you will either need to contact your system administrator or login with an adminisrator account to change it as follows:
+
+1. Type "users" in the filter navigator
+2. Click on "Organization" -> "Users"
+3. Click on the user that you want to change
+4. SCroll to the "Roles" section at the bottom and click "Edit"
+5. Add the role(s) you want to give the user and click "Save"
 
 The picture below shows the REST API Explorer with the endpoint for the request and a drop-down with all the tables that can be used:
 ![image](/img/2017/10/sn_api_explorer.png)
