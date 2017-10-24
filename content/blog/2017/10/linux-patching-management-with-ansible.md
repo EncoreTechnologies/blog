@@ -43,54 +43,113 @@ The directory structure we've elected to leverage on the Ansible control node is
     |   |    |
     |   |    |- all
     |   |    |   |
-    |   |    |   |- config:
-    |   |    |        { # File name of pre and post patching scripts.
-    |   |    |            pre_update_script: /opt/encore/home/svc_encore/pre_update.sh
-    |   |    |            post_update_script: /opt/encore/home/svc_encore/post_update.sh
-    |   |    |            post_update_conf.env: /opt/encore/home/svc_encore/post_update_conf.env
-    |   |    |            env_verify_dest: /opt/encore/home/svc_encore/env_verify.sh}    
+    |   |    |   |- config
     |   |    |
     |   |    |- <host_group> (optional)
     |   |    |   |
-    |   |    |   |- config: { env_verify_src: "{{ role_path }}"/files/group/<group_name>/env_verify.sh
-    |   |                     pre_update_src: "{{ role_path }}"/files/group/<group_name>/pre_update.sh}
+    |   |    |   |- config
+    |   |
+    |   |- hosts
     |   |   
     |   |- host_vars
     |        |
     |        |- <hostname> (optional)
     |        |   |
-    |        |   |- config: { env_verify_src: "{{ role_path }}"/files/group/<hostname>/env_verify.sh
-    |                         pre_update_src: "{{ role_path }}"/files/group/<hostname>/pre_update.sh}
+    |        |   |- config
     |
-    |-playbooks
+    |- playbooks
     |   |
     |   |- update_config.yaml
+    |   |- update.yaml
+    |
     |
     |- roles
         |
         |- update_config
+        |    |
+        |    |- files
+        |    |    |
+        |    |    |- host
+        |    |    |    |- <hostname> (optional)
+        |    |    |            |- env_verify.sh
+        |    |    |            |- pre_update.sh
+        |    |    |
+        |    |    |- group
+        |    |    |    |- <groupname> (optional)
+        |    |    |            |- env_verify.sh
+        |    |    |            |- pre_update.sh
+        |    |    |
+        |    |    |- post_update.sh
+        |    |    |- post_update_conf.env
+        |    |
+        |    |- tasks
+        |         |- main.yaml
+        |
+        |- pre_update
+        |    |
+        |    |- tasks
+        |    |    |- main.yaml
+        |    |
+        |    |- vars
+        |         |- main.yaml
+        |
+        |- post_update
+        |    |
+        |    |- tasks
+        |         |- main.yaml
+        |
+        |- yum_update
              |
-             |- files
-             |    |
-             |    |- host
-             |    |    |- <hostname> (optional)
-             |    |            |- env_verify.sh
-             |    |            |- pre_update.sh
-             |    |
-             |    |- group
-             |    |    |- <groupname> (optional)
-             |    |            |- env_verify.sh
-             |    |            |- pre_update.sh
-             |    |
-             |    |- post_update.sh
-             |    |- post_update_conf.env
+             |- handlers
+             |    |- main.yaml
              |
              |- tasks
+             |    |- main.yaml
+             |
+             |- vars
                   |- main.yaml
+
+
+```
+
+#### /etc/ansible/inventory/group_vars/all/config
+This configuration file defines the remote destination paths that files are written to by Ansible, and then used during playbook execution to run pre- and post-update actions.  Configurations stored in this file are universal to all remote hosts.  *This configuration     file is mandatory.*
+
+```yaml
+# Destination paths for pre- and post-patching files
+pre_update_script: /opt/encore/home/ansible_svc/pre_update.sh
+post_update_script: /opt/encore/home/ansible_svc/pre_update.sh
+pre_update_script: /opt/encore/home/ansible_svc/pre_update.sh
+pre_update_script: /opt/encore/home/ansible_svc/pre_update.sh
+```
+
+#### /etc/ansible/inventory/group_vars/\<host_group\>/config
+This configuration file defines the local source paths for files whose contents are written by Ansible to remote hosts, and then used during playbook execution to run pre- and post-update actions.  Configurations stored in this file are specifc to a host_group.  *This    configuration file is optional.*
+
+**Ex.** */etc/ansible/inventory/group_vars/test_dev/config*
+```yaml
+env_verify_src: "{{ role_path }}/files/group/test_dev/env_verify.sh"
+pre_update_src: "{{ role_path }}/files/group/test_dev/pre_update.sh"
+```
+#### /etc/ansible/inventory/hosts
+This file contains all the hosts that the Ansible control node will manage.
+```text
+[test_dev] #host_group
+testbuild1.local  #host_record
+
+```
+
+#### /etc/ansible/inventory/host_vars/\<hostname\>/config
+This configuration file defines the local source paths for files whose contents are written by Ansible to remote hosts, and then used during playbook execution to run pre- and post-update actions.  Configurations stored in this file are specific to a host.  *This         configuration file is optional.*
+
+**Ex.** */etc/ansible/inventory/host_vars/testbuild1.local/config*
+```yaml
+env_verify_src: "{{ role_path }}/files/host/testbuild1.local/env_verify.sh"
+pre_update_src: "{{ role_path }}/files/host/testbuild1.local/pre_update.sh"
 ```
 
 #### /etc/ansible/playbooks/update_config.yaml
-This is the playbook YAML file that will refer to the `inventory` and `role` files defined here to manage the update files for remote hosts.
+This is the playbook YAML file that refers to the `inventory` and `role` files defined here to manage the update files for remote hosts.
 
 ```yaml
 ---
@@ -109,35 +168,79 @@ This is the playbook YAML file that will refer to the `inventory` and `role` fil
     - update_config
 ```
 
-#### /etc/ansible/inventory/group_vars/all/config
-This configuration file defines the remote destination paths that files are written to by Ansible, and then used during playbook execution to run pre- and post-update actions.  Configurations stored in this file are universal to all remote hosts.  *This configuration file is mandatory.*
+#### /etc/ansible/playbooks/update.yaml
+This playbook YAML file refers to the `inventory` and `role` files to execute patching for remote hosts.
+
+
+#### /etc/ansible/roles/update_config/tasks/main.yaml
+This file is where the playbook's tasks are executed from.  
 
 ```yaml
-# Destination paths for pre- and post-patching files
-pre_update_script: /opt/encore/home/ansible_svc/pre_update.sh
-post_update_script: /opt/encore/home/ansible_svc/pre_update.sh
-pre_update_script: /opt/encore/home/ansible_svc/pre_update.sh
-pre_update_script: /opt/encore/home/ansible_svc/pre_update.sh
+---
+#--------------------------------------------------------------
+# Description: Tasks for configuring pre- and post-
+#              update actions for AFG Linux hosts
+#      Author: B. Alcorn
+#        Date: 2017.10.11
+#--------------------------------------------------------------
+
+- name: Check required variables are defined
+  fail:
+    msg: 'variable {{ item }} is not defined'
+  when: item is not defined
+  with_items:
+    - post_update_script
+    - post_update_conf.env
+
+- name: Verify svc_encore directory exists
+  file:
+    path: /opt/encore/home/ansible_svc
+    state: directory
+    mode: '0755'
+
+- name: Copy universal post-update script and config, optional files to hosts
+
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ user_id }}"
+    group: "{{ user_id }}"
+    mode: "{{ item.file_mode }}"
+    backup: yes
+
+  with_items:
+    - { src: post_update.sh,
+        dest: "{{ post_update_script }}",
+        file_mode: '0755' }
+    - { src: post_update_conf.env,
+        dest: "{{ post_update_conf }}",
+        file_mode: '0655' }
+
+- local_action: stat path="{{ pre_update_src }}"
+  register: pre_update_file
+    
+- copy: 
+    src: "{{ pre_update_src }}"
+    dest: "{{ pre_update_script }}"
+    owner: "{{ user_id }}"
+    group: "{{ user_id }}"
+    mode: '0755'
+    backup: yes    
+  when: pre_update_file.stat.exists
+ 
+- local_action: stat path="{{ env_verify_src }}"
+  register: env_verify_file
+ 
+- copy:
+    src: "{{ env_verify_src }}"
+    dest: "{{ env_verify_dest }}"
+    owner: "{{ user_id }}"
+    group: "{{ user_id }}"
+    mode: '0755'
+    backup: yes    
+  when: env_verify_file.stat.exists
+
 ```
-
-#### /etc/ansible/inventory/group_vars/\<host_group\>/config
-This configuration file defines the local source paths for files whose contents are written by Ansible to remote hosts, and then used during playbook execution to run pre- and post-update actions.  Configurations stored in this file are specifc to a host_group.  *This configuration file is optional.*
-
-**Ex.** */etc/ansible/inventory/group_vars/test_dev/config*
-```yaml
-env_verify_src: "{{ role_path }}/files/group/test_dev/env_verify.sh"
-pre_update_src: "{{ role_path }}/files/group/test_dev/pre_update.sh"
-```
-
-#### /etc/ansible/inventory/host_vars/\<hostname\>/config
-This configuration file defines the local source paths for files whose contents are written by Ansible to remote hosts, and then used during playbook execution to run pre- and post-update actions.  Configurations stored in this file are specific to a host.  *This configuration file is optional.*
-
-**Ex.** */etc/ansible/inventory/host_vars/testbuild1.lcoal/config*
-```yaml
-env_verify_src: "{{ role_path }}/files/host/testbuild1.local/env_verify.sh"
-pre_update_src: "{{ role_path }}/files/host/testbuild1.local/pre_update.sh"
-```
-
 
 
 ### Remote Hosts
@@ -145,7 +248,7 @@ pre_update_src: "{{ role_path }}/files/host/testbuild1.local/pre_update.sh"
 The directory structure on remote hosts is as follows: 
 
 ```text
-/opt/home/encore/svc_encore
+/opt/home/encore/ansibl_svc
     |
     |- env_verify.sh
     |- pre_update.sh
