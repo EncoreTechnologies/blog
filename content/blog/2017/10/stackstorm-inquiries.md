@@ -2,7 +2,7 @@
 author = "Nick Maludy"
 author_url = "https://github.com/nmaludy"
 categories = ["Nick Maludy", "StackStorm", "inquiries", "duo"]
-date = "2017-11-01"
+date = "2017-10-31"
 description = "Provides a walkthrough of securing a StackStorm Mistral workflow with Duo 2-factor authentication from your phone using the newly available inquiries feature in StackStorm 2.5"
 featuredpath = "date"
 linktitle = ""
@@ -289,7 +289,7 @@ to use.
 To get started we need to sign up for an account on their signup page:
 [https://signup.duo.com](https://signup.duo.com).
 
-![Duo Signup Page](/img/2017/11/duo_signup_page.jpg)
+![Duo Signup Page](/img/2017/10/duo_signup_page.jpg)
  
 ### Duo - Protect an Application
  
@@ -298,12 +298,12 @@ a screen where you'll add a new application to protect using Duo. In this cas
 we want to protect a `Web SDK` application. Type `Web SDK` into the search bar (1)
 and click `Protect this Application` (2):
 
-![Protect an Application](/img/2017/11/duo_protect_an_application.jpg)
+![Protect an Application](/img/2017/10/duo_protect_an_application.jpg)
 
 You will then be brought to a screen containing your new credentials for this
 application. Save these off, we'll be using them later for the Duo pack config.
 
-![Web SDK Details](/img/2017/11/duo_web_sdk_details.jpg)
+![Web SDK Details](/img/2017/10/duo_web_sdk_details.jpg)
 
 
 ### Duo - Adding a User
@@ -312,28 +312,28 @@ Duo, by default, does not have any users configured for authentication. To add a
 new user click Users (1), Add User (2), enter the username (3) and press the Add User
 button (4).
 
-![Duo Add Phone](/img/2017/11/duo_add_user_enter.jpg)
+![Duo Add Phone](/img/2017/10/duo_add_user_enter.jpg)
 
 Now that the user is added we need to add a phone to their account. Scroll down
 on the users page to the `Phones` section and click `Add Phone` (2):
 
-![Duo Add Phone](/img/2017/11/duo_add_phone.jpg)
+![Duo Add Phone](/img/2017/10/duo_add_phone.jpg)
 
 Fill out the phone details and click the `Add Phone`(1) button:
 
-![Duo Add Phone Details](/img/2017/11/duo_add_phone_enter.jpg)
+![Duo Add Phone Details](/img/2017/10/duo_add_phone_enter.jpg)
 
 Once the phone is added it needs to be added, click the `Activate Duo Mobile`(1):
 
-![Duo Activate Phone](/img/2017/11/duo_activate_phone.jpg)
+![Duo Activate Phone](/img/2017/10/duo_activate_phone.jpg)
 
 Click `Generate Duo Mobile Activation Code`(1):
 
-![Duo Generate Mobile Activation Code](/img/2017/11/duo_activate_phone_generate.jpg)
+![Duo Generate Mobile Activation Code](/img/2017/10/duo_activate_phone_generate.jpg)
 
 Click `Send Instructions by SMS`(1):
 
-![Duo Send SMS](/img/2017/11/duo_activate_phone_send_sms.jpg)
+![Duo Send SMS](/img/2017/10/duo_activate_phone_send_sms.jpg)
 
 
 At this time, go to your phone and install the Duo app via your phone's native
@@ -359,7 +359,7 @@ them here.
 If you forgot to write them down, you can retrieve them in the Duo admin
 console by going to Applications (1), Web SDK (2):
 
-![Duo Application Credentials](/img/2017/11/duo_application_creds.jpg)
+![Duo Application Credentials](/img/2017/10/duo_application_creds.jpg)
 
 Credentials are composed of three pieces of information. The table below provides
 a mapping between the name on the Duo page and the name in the `st2` config.
@@ -463,7 +463,7 @@ We'll be authenticating using a `passcode`, to generate a passcode open up your
 Duo mobile app and click the key icon (1) next to your account name. This will
 pop up a 6-digit number (2), that is your passcode.
 
-![Duo Passcode](/img/2017/11/duo_passcode.jpg)
+![Duo Passcode](/img/2017/10/duo_passcode.jpg)
 
 Using the passcode you just generated run the `duo.auth_auth` action. The username
 parameter is the username for additional account we added `testuser`, not your admin account:
