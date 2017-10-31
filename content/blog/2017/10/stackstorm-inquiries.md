@@ -508,10 +508,6 @@ parameters:
     type: string
     description: "Name of the service to restart."
     required: true
-  duo_username:
-    type: string
-    description: "Duo username to use for 2FA."
-    required: true
 ```
 
 **actions/workflows/service_restart_v3.yaml**
@@ -523,7 +519,6 @@ demo_inquiries.service_restart_v3:
   type: direct
   input:
     - service
-    - duo_username
 
   output:
     result: "{{ _.result }}"
@@ -536,19 +531,24 @@ demo_inquiries.service_restart_v3:
          schema:
            type: object
            properties:
-             secondfactor:
+             username:
                type: string
-               description: "Please enter second factor for restarting the '{{ _.service }}' service"
-               required: True
+               description: "Please enter Duo username for restarting the '{{ _.service }}' service"
+               required: true
+             passcode:
+               type: string
+               description: "Please enter Duo passcode (generated on the mobile app) for restarting the '{{ _.service }}' service"
+               required: true
+               secret: true
        on-success:
          - duo_2fa
 
     duo_2fa:
       action: duo.auth_auth
       input:
-        username: "{{ _.username }}"
+        username: "{{ task('inquiry_2fa').result.response.username }}"
         factor: passcode
-        passcode: "{{ task('inquiry_2fa').result.response.secondfactor }}"
+        passcode: "{{ task('inquiry_2fa').result.response.passcode }}"
       on-success:
         - service_restart
               
