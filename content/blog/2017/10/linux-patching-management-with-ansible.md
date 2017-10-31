@@ -109,7 +109,7 @@ The directory structure we've elected to leverage on the Ansible control node is
 The directory structure on remote hosts is as follows:
 
 ```text
-/opt/home/encore/ansibl_svc
+/home/ansible_svc
     |
     |- env_verify.sh
     |- pre_update.sh
