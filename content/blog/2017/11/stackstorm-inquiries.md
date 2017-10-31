@@ -3,17 +3,20 @@ author = "Nick Maludy"
 author_url = "https://github.com/nmaludy"
 categories = ["Nick Maludy", "StackStorm", "inquiries", "duo"]
 date = "2017-11-01"
-description = "Provides a walkthrough of securing a Mistral workflow with Duo 2-factor authentication using ChatOps in StackStorm"
+description = "Provides a walkthrough of securing a StackStorm Mistral workflow with Duo 2-factor authentication from your phone using the newly available inquiries feature in StackStorm 2.5"
 featuredpath = "date"
 linktitle = ""
-title = "Playing Around With Inquiries In StackStorm 2.5"
+title = "Implementing 2-Factor Auth For Workflows In StackStorm Using Inquiries"
 type = "post"
 +++
 
-[Inquiries](https://docs.stackstorm.com/inquiries.html) are an experimental feature 
-in StackStorm 2.5 ([changelog](https://docs.stackstorm.com/changelog.html#october-25-2017))
+A common request i've seen on the [StackStorm Slack Channel](https://stackstorm.com/community-signup)
+is the ability to utilize 2-factor auth before executing a workflow. Users sometimes
+have very powerful workflows that require extra care, or a second set of eyes
+before executing. [Inquiries](https://docs.stackstorm.com/inquiries.html) are an
+experimental feature in StackStorm 2.5 ([changelog](https://docs.stackstorm.com/changelog.html#october-25-2017))
 that allow the workflow to pause and wait for input from a user before proceeding.
-In this post we're going to use this new feature to secure a workflow execution
+In this post we're going to use inquiries to secure a workflow execution
 using Duo 2-factor authentication (2FA).
 
 ## Getting Started
@@ -101,19 +104,19 @@ end_timestamp: 2017-10-30T15:04:09.121116Z
 +--------------------------+------------------------+-----------------+-----------------+-----------------+
 ```
 
-This action is very powerful and could potentially cause harm, so in the
-following sections we'll detail how to add 2-factor authentication to
-this workflow so that services aren't accidentally restarted without
-proper approval.
+This action is very powerful and could potentially cause harm if the user
+restarted a more system critical service. In the following sections we'll
+detail how to add 2-factor authentication to this workflow so that services
+aren't accidentally restarted without proper approval.
 
 
 ## Hard Coded 2-factor
 
 Our service restart action definitely should not be allowed to run arbitrarily
 and we would like to confirm this action prior to executing. To accomplish this
-we're going to utilize the StackStorm inquiry feature by insert a new task
-in the workflow. This task will execute the `core.ask` action and retrieve
-our approval string.
+we're going to utilize the StackStorm inquiry feature by inserting a new task
+in the workflow. This task will execute the `core.ask` action which pauses
+the workflow and waits for the user to input an approval string.
 
 **actions/service_restart_v2.yaml**
 ```yaml
@@ -291,14 +294,14 @@ To get started we need to sign up for an account on their signup page:
 ### Duo - Protect an Application
  
 Once you've completed the signup and activation process you will be brought to
-a screen where we'll add a new application to protect using Duo. In this cas
-we want to protect a `Web SDK` application, type this into the search bar (1)
+a screen where you'll add a new application to protect using Duo. In this cas
+we want to protect a `Web SDK` application. Type `Web SDK` into the search bar (1)
 and click `Protect this Application` (2):
 
 ![Protect an Application](/img/2017/11/duo_protect_an_application.jpg)
 
-You will then be brought to a screen with your new credentials for this application.
-Save these off, we'll be using them later in the Duo pack config.
+You will then be brought to a screen containing your new credentials for this
+application. Save these off, we'll be using them later for the Duo pack config.
 
 ![Web SDK Details](/img/2017/11/duo_web_sdk_details.jpg)
 
@@ -333,7 +336,7 @@ Click `Send Instructions by SMS`(1):
 ![Duo Send SMS](/img/2017/11/duo_activate_phone_send_sms.jpg)
 
 
-At this time, go to your phone and install the Duo app via your phones native
+At this time, go to your phone and install the Duo app via your phone's native
 application store. Once installed click on the link received via SMS, this will
 add the account to your phone. You should now be ready to authenticate to Duo.
 
@@ -458,10 +461,12 @@ result:
 Finally we'll test out actually authenticating using the `duo.auth_auth` action.
 We'll be authenticating using a `passcode`, to generate a passcode open up your
 Duo mobile app and click the key icon (1) next to your account name. This will
-pop up a 6-digit number, that is your passcode.
+pop up a 6-digit number (2), that is your passcode.
+
+![Duo Passcode](/img/2017/11/duo_passcode.jpg)
 
 Using the passcode you just generated run the `duo.auth_auth` action. The username
-specified is the username of the account created previously, not your admin account:
+parameter is the username for additional account we added `testuser`, not your admin account:
 
 ```shell
 $ st2 run duo.auth_auth username=testuser factor=passcode passcode="1234"
