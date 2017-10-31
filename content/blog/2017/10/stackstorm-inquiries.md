@@ -10,7 +10,7 @@ title = "Implementing 2-Factor Auth For Workflows In StackStorm Using Inquiries"
 type = "post"
 +++
 
-A common request i've seen on the [StackStorm Slack Channel](https://stackstorm.com/community-signup)
+A common request I have seen on the [StackStorm Slack Channel](https://stackstorm.com/community-signup)
 is the ability to utilize 2-factor auth before executing a workflow. Users sometimes
 have very powerful workflows that require extra care, or a second set of eyes
 before executing. [Inquiries](https://docs.stackstorm.com/inquiries.html) are an
