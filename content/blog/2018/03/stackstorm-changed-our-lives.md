@@ -11,7 +11,7 @@ type = "post"
 +++
 
 We started playing around with [StackStorm](https://stackstorm.com/) about 9
-months ago just to try out  some new tools. After a few months of playing
+months ago just to try out some new tools. After a few months of playing
 around we realized that it was much more than a toy and could provide serious
 benefits to our DevOps team, our organization and to our customers. Before we
 discuss all of the great things about StackStorm, let's start with a little
@@ -19,30 +19,30 @@ history.
 
 ## History
 
-When i started at Encore in June of 2016 the team had just started working on
+When I started at Encore in June of 2016 the team had just started working on
 an automation platform. The product name of our "old platform" will remain
 nameless and will simply be referred to as the "old platform". This job was a
 very big transition for me coming from a purely Dev background. This was also my
-first experience with enterprise scale IT infrastructure. To boil it down i 
+first experience with enterprise scale IT infrastructure. To boil it down I
 didn't know what to expect and had no insight into other tools in the automation
-space that could solve our problem.
+space that could help automate our use case.
 
-Our initial usecase for our automation platform was to automate VM provisioning
+Our initial use case for our automation platform was to automate VM provisioning
 and retirement. After about a year we started getting requests for generic
 automation tasks. The old platform was barely equipped to do VM provisioning
 and having it do generic automation tasks was even more painful.
 
 ### History - 1) Lack of automated deployments
 
-Very quickly into using the old platform we ran into issues. First and foremost
+Very quickly into using the old platform we ran into issues. First and foremost,
 the system was not able to be automatically deployed. It came in an OVA format
 and once the VM was stood up, all configuration from there on out had to be done
 by hand via their Web UI. The average time to setup a single-node instance is
 about 8 hours (one day) for an experienced engineer. To setup a 4-node cluster
 takes about 3 days. The configuration settings are all stored in the tool's
-database making it extremely hard to management with a config management system.
+database making it extremely hard to manage with a config management system.
 The lack of automated deployments and config management meant that standing up a
-new instance for one of the Devs on our team was a laboring process. Ever member
+new instance for one of the Devs on our team was a laboring process. Every member
 of the team had one, maybe two, instances. If one of the instances got messed up
 it was devastating because that meant at least one day worth of effort to go
 rebuild it.
@@ -70,7 +70,7 @@ test a single function/method in the old platform was to run our entire State
 Machine (workflow) from beginning to end. Some of these State Machines are very
 complex and can run  anywhere from 1-3 hours. During this time we either had to
 be really good at changing gears or just wait for the State Machine execution to
-complete or error out. For our VM provisioning State Machine it took around 1 
+complete or error out. For our VM provisioning State Machine, it took around 1 
 hour to run through the entire thing. This means we could only test a maximum of
 8 changes a day.
 
@@ -80,7 +80,7 @@ Fifth, the only way to have any insight into how the system was executing
 our State Machines was to tail the logs on the server. If an error occurred
 you might know what function it was in, but generally had no idea what
 line it occurred on or what the inputs of the functions were. We ended
-up having to print out massing amounts of debug statements to the log files
+up having to print out massive amounts of debug statements to the log files
 just so we had a clue as to what was going on. If an engineer forgot to
 add logging statements, we were in the dark. This was particularly problematic
 when debugging issues in production that were reported some time after
@@ -96,8 +96,8 @@ issues.
 
 ### History - Key takeaways
 
-I could go on for days about how painful the old platform was to use both
-in development and in production. I think i'll stop here to focus on how much
+I could go on for days about how painful the old platform was to use, both
+in development and in production. I think I'll stop here to focus on how much
 better our life is now with StackStorm.
 
 Some key takeaways about the old platform is that it was painful to use,
@@ -105,7 +105,7 @@ made our team members lives harder, and slowed down our development velocity.
 
 ## Recognizing we had a problem
 
-About a year into working with the old platform, our entire team had enough.
+About a year into working with the old platform, our entire team was fed up.
 We realized we were being held back by the old platform. Coming from a Dev
 background, I knew we could do better. I also knew that things like Continuous
 Integration and automated deployments could change our lives for the better.
@@ -155,9 +155,9 @@ environments, for instance on Dev laptops), so engineers can take their work
 with them.
 
 Each of these install methods takes 3-5 minutes. I personally have probably 5+
-Dev instances and another 3 instances on my laptop. If i have a problem with
-an instance i quickly tear it down and start over. The process is so quick and
-painless i am still taken back.
+Dev instances and another 3 instances on my laptop. If I have a problem with
+an instance I quickly tear it down and start over. The process is so quick and
+painless I am still taken back.
 
 ### StackStorm - Documentation
 
@@ -194,15 +194,15 @@ box. See our blog post [automated-creation-of-stackstorm-packs](/blog/2017/10/au
 for more info in using this cookiecutter template.
 
 As described above, StackStorm makes it super simple to test your automation
-code. Even it it's not Python, you can still write unit tests for your isolated
+code. Even if it's not Python, you can still write unit tests for your isolated
 actions in whatever framework and testing harness you like.
 
 The final point about testing is the *extensive* automated testing done by the
 StackStorm team on the core project itself. Taking a look at their 
 [Makefile](https://github.com/StackStorm/st2/blob/master/Makefile) you will
-quickly notice that they're not joking around. The have everything from unit
+quickly notice that they're not joking around. They have everything from unit
 tests, integration tests, and end-to-end tests. Since all of these components
-are tested so heavily it results in extremely predictable releases. Very rarely
+are tested so heavily, it results in extremely predictable releases. Very rarely
 are bugs introduced into the system between releases. When a new bug is found
 it is usually the result of a testing gap, and the fix to the bug will include
 new tests to ensure the condition is caught in the future.
@@ -459,8 +459,8 @@ result:
 ```
 
 An even more amazing part of the `re-run` capability is that you can
-override parameters on the CLI. So, say for example you have 5 parameters
-`a, b, c, d` and want to test out execution the action with 4 of the same
+override parameters on the CLI. So, say for example you have 4 parameters
+`a, b, c, d` and want to test out execution the action with 3 of the same
 but a different value of `d`, you can do this on the CLI like so:
 
 ```shell
@@ -501,7 +501,7 @@ in the same time it would take the old platform to even begin execution.
 ### StackStorm - Takeaways
 
 I could go on for days about how amazing StackStorm is and what other great
-feature it provides. Stay tuned to this blog for more posts about what some
+features it provides. Stay tuned to this blog for more posts about what some
 of those other features are and how to use them.
 
 Bottom line is that it addressed all of the problems of our old platform
@@ -510,14 +510,14 @@ and expanded our automation capabilities by an Extreme amount.
 
 ## Our lives today
 
-Today the lives our developers are so much better. We use and abuse the
+Today the lives of our developers are so much better. We use and abuse the
 automated deployment capabilities of StackStorm to quickly spin up
 new instances so we can focus our time on developing automation code and
 solving problems for our customers.
 
 We've implemented continuous integration into our software development life 
-cycle resulting in consistent, predictable releases. This means fewer our team
-spends less time on responding to incidents and more time coding new features.
+cycle resulting in consistent, predictable releases. This means less time our 
+team spends on responding to incidents and more time coding new features.
 
 When we do need to respond to an incident or debug a problem during development
 we can utilize the granular execution model of StackStorm to find and fix
@@ -529,13 +529,13 @@ to ourselves and our customers.
 
 ## Going beyond VM provisioning
 
-Going back to our initial usecase for our automation platform was to automate
-VM provisioning and retirement. Now that we've transitioned over to StackStorm
-we're able to go *far* beyond VM provisioned and have started automating every
-part of the stack from networking, to storage, scraping power & cooling metrics,
-website scraping, and business process automation.
+Going back to our initial use case for our automation platform, it was to
+automate VM provisioning and retirement. Now that we've transitioned over to 
+StackStorm we're able to go *far* beyond VM provisioned and have started 
+automating every part of the stack from networking, to storage, scraping 
+power & cooling metrics, website scraping, and business process automation.
 
-These usecases are now growing every day and more parts of our company are
+These use cases are now growing every day and more parts of our company are
 reaping the benefits of migrating to StackStorm as our automation platform.
 
 ## Shout out and thank yous
@@ -546,11 +546,11 @@ With out your support none of this would have been possible.
 
 A huge shout out to the StackStorm team at Extreme Networks for helping and
 guiding us along the way. You are hands down the best vendor we've had
-the please of working with. The passion you dedication for your work is present
+the please of working with. The passion and dedication for your work is present
 in every release of StackStorm that comes through. Your work has changed
 our lives forever.
 
-Finally i'd like to thank the guys on the DevOps team here at Encore.
+Finally I'd like to thank the guys on the DevOps team here at Encore.
 Thanks for putting up with the old platform for so long. Your hard work
 and support during this journey turned our dreams into reality.
 
