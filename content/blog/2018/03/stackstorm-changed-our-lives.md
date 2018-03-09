@@ -130,7 +130,7 @@ event-based automation. It has a huge set of existing integrations available
 to the community on the [StackStorm exchange](https://exchange.stackstorm.org/),
 allowing teams to get started quickly and share their work with the community.
 There are all sorts of other goodies and features that StackStorm provides,
-for more info i suggest you checkout StackStorm's [website](https://stackstorm.com/)
+for more info I suggest you checkout StackStorm's [website](https://stackstorm.com/)
 and [documentation](https://docs.stackstorm.com/) for more info.
 
 ### StackStorm - Automated deployments
@@ -161,7 +161,7 @@ painless I am still taken back.
 
 ### StackStorm - Documentation
 
-If i could summarize the [StackStorm documentation](https://docs.stackstorm.com/)
+If I could summarize the [StackStorm documentation](https://docs.stackstorm.com/)
 in one word it would be "amazing". Every developer on our team taught themselves
 StackStorm by simply reading the documentation and playing around with the
 [examples](https://docs.stackstorm.com/start.html#deploy-examples). 
@@ -546,7 +546,7 @@ With out your support none of this would have been possible.
 
 A huge shout out to the StackStorm team at Extreme Networks for helping and
 guiding us along the way. You are hands down the best vendor we've had
-the please of working with. The passion and dedication for your work is present
+the pleasure of working with. The passion and dedication for your work is present
 in every release of StackStorm that comes through. Your work has changed
 our lives forever.
 
