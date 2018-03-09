@@ -4,9 +4,10 @@ title = "Encore Technologies - DevOps Blog"
 theme = "hugo-future-imperfect"
 preserveTaxonomyNames = true
 paginate = 3
-disqusShortname = "shortname"
+disqusShortname = "encoretechnologies"
 googleAnalytics = "UA-108206364-1"
 pluralizeListTitles = false
+image = "/img/main/encore_power_button_small.png"
 
 [params]
     # Sets the meta tag description, usually reserved for the main page
