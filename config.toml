@@ -7,7 +7,6 @@ paginate = 3
 disqusShortname = "encoretechnologies"
 googleAnalytics = "UA-108206364-1"
 pluralizeListTitles = false
-image = "/img/main/encore_power_button_small.png"
 
 [params]
     # Sets the meta tag description, usually reserved for the main page
@@ -45,6 +44,7 @@ image = "/img/main/encore_power_button_small.png"
 
     customCSS            = ["default"]
     customJS             = ["default"]
+    images               = ["/img/main/encore_power_button_small.png"]
 
 # Disqus will take priority over staticman due to its ease of use. Feel free to check out both and decide.
 [params.staticman]
