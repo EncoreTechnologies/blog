@@ -72,7 +72,7 @@ pluralizeListTitles = false
     # future imperfect's hexagonal shape
     circle    = false
     imperfect = false
-    width     = ""
+    width     = "375"
     alt       = "Hugo Future Imperfect"
 
 # Adjust the amount of recent posts on the sidebar.
@@ -120,7 +120,7 @@ pluralizeListTitles = false
 #     weight = 5
 
 # Insert your username and the icon will apear on the page as long as
-# socialAppearAtTop or socialAppearAtBottom is set to true in the params area
+  # socialAppearAtTop or socialAppearAtBottom is set to true in the params area
 # The social media icons will appear on the sidebar
 [social]
     website         = "encore.tech"
