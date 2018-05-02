@@ -72,7 +72,7 @@ pluralizeListTitles = false
     # future imperfect's hexagonal shape
     circle    = false
     imperfect = false
-    width     = "375"
+    width     = "300"
     alt       = "Hugo Future Imperfect"
 
 # Adjust the amount of recent posts on the sidebar.
