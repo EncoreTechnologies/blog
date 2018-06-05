@@ -8,7 +8,7 @@ featured = "date"
 featuredalt = ""
 featuredpath = ""
 linktitle = ""
-title = "Automating Red Hat Enterprise Linuc Patching with Ansible (Part 2 0f 2)"
+title = "Automating Red Hat Enterprise Linux Patching with Ansible (Part 2 0f 2)"
 type = "post"
 
 +++
