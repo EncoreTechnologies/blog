@@ -2,7 +2,7 @@
 author = "Brian Alcorn"
 author_url = ""
 categories = ["Brian Alcorn", "Encore", "Ansible", "Patch", "Patching", "DevOps"]
-date = "2018-06-05"
+date = "2018-06-12"
 description = "How we automated Red Hat Enterprise Linux OS patching to reduce time-to-production and human error, while improving compliance and risk management posture."
 featured = "date"
 featuredalt = ""
