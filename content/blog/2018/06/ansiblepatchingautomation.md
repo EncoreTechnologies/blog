@@ -20,7 +20,7 @@ Around a year ago, we began working with a customer who's Red Hat Enterprise Lin
 
 >Ensure that all system components and software are protected from known vulnerabilities by installing applicable vendor-supplied security patches.  Install critical patches within one month of release.
 
-Because of this and other PCI compliance requirements, all the customer's RHEL servers needed to be patched at least once monthly.  Patching needed to follow a *DEVELOPMENT -> STAGING -> PRODUCTION* workflow to minimize risks to the production environments. Because of the complexities involved in a fully manual patcing process, meeting PCI compliance standards was a constant chase with inconsistent results.
+Because of this and other PCI compliance requirements, all the customer's RHEL servers needed to be patched at least once monthly.  Patching needed to follow a *DEVELOPMENT -> STAGING -> PRODUCTION* workflow to minimize risks to the production environments. Because of the complexities involved in a fully manual patching process, meeting PCI compliance standards was a constant chase with inconsistent results.
 
 Dissatisfied with the high costs, high complexity and consistent underperformance of the manual patching process, the customer sought ways to improve operational efficiency and reduce costs, expressing interest in leveraging automation where it made sense to do so.
 
@@ -111,124 +111,151 @@ The `playbooks` directory houses all the playbooks (written in YAML) that are us
 
 /ansible/playbooks/update.yaml
 ```
-#!/bin/bash
-# @author Brian Alcorn <brian.alcorn@encore.tech>
-# @date 2017-10-10
-# @brief script that runs at the end of patching (post-reboot if reboot is
-#        required) that checks uptime, running kernel, prints latest update
-#        actions, and performs various system checks defined for a given
-#        environment
-
-# Load config file
-
-source /opt/encore/home/svc_encore/post_update_conf.env
-
-###########################
-# Begin Functions         #
-
-function log_msg {
-  current_time=$(date "+%Y-%m-%d %H:%M:%S.%3N")
-  log_level=$1
-  # all arguments except for the first one, since that is the level
-  log_msg="${@:2}"
-  echo "[$current_time] $log_level - $log_msg" >> "$logFile"
-}
-
-function log_error {
-  log_msg "ERROR" "$@"
-}
-
-function log_info {
-  log_msg "INFO " "$@"
-}
-
-function log_debug {
-  log_msg "DEBUG" "$@"
-}
-
-function compare_errata {
-  # Function code adapted from code by R. Paxton
-  (yum updateinfo list installed | tail -n +3 | grep -v updateinfo | sort > "$workDir"/.current.errata)
-
-  #Initialize last errata info if none (display full errar list)
-  if [[ ! -s "$workDir"/.last.errata ]]; then
-    touch "$workDir"/.last.errata
-  fi
-
-  # Compare last errata to current errata and only log changes.
-  comm -3 "$workDir"/.last.errata "$workDir"/.current.errata > "$workDir"/.new.errata
-
-  mv -f "$workDir"/.current.errata "$workDir"/.last.errata
-
-  # Massage new errata list
-  if [[ ! -s "$workDir"/.new.errata  ]]; then
-    echo -e "\n========== new errata ===========\n" > "$workDir"/.new.errata
-    echo "No new errata applied to this host since last update." >> "$workDir"/.new.errata
-  else
-    # Remove leading whitespace from comm
-    sed -i 's/^\s*//' "$workDir"/.new.errata
-    sed -i '1s/^/\n========== new errata ===========\n\n/' "$workDir"/.new.errata
-  fi
-
-  # Get last yum history info
-  lastUpdate=$(yum history | grep 'svc_encore\|balcorn' | head -1 | awk '{print $1}')
-
-  # Massage update history info
-  yum history info "$lastUpdate" > "$workDir"/.yum.history
-  echo -e "\n========== last update history ===========\n" >> "$workDir"/.new.errata
-  cat "$workDir"/.yum.history >> "$workDir"/.new.errata
-  cat "$workDir"/.new.errata >> "$logFile"
-
-}
-
-# End Functions           #
-###########################
-
-###########################
-# Begin Body              #
-
-errorCheck=0
-
-cat /dev/null > "$logFile"
-
-log_info "========================================================"
-log_info "= Post-update status for $HOSTNAME"
-log_info "========================================================"
-
-log_info "Running Kernel: "
-result=$(uname -r)
-log_info "${result}"
-
-log_info "System Uptime: "
-result=$(uptime)
-log_info "${result}"
-log_info ""
-
-log_info "========================================================"
-log_info "= Update history:"
-log_info "========================================================"
-
-# Collect and clean up update information
-compare_errata
-
-# Execute environment/system-specific validation script if it exists
-if [ -f "$snowFlake" ]; then
-  . "$snowFlake"
-  errorCheck=$?
-fi
-
-# Final status of healthchecks - prepend to top of logFile
-if [ ${errorCheck} != 0 ]; then
-        statusMsg="STATUS: ERROR: Something went wrong.  Please review results"
-        sed -i "1s/^/$statusMsg\n\n/" "$logFile"
-else
-        statusMsg="STATUS: OK"
-        sed -i "1s/^/$statusMsg\n\n/" "$logFile"
-fi
-
-/bin/mail -s "Post-patching report for $HOSTNAME" "$email"  < "$logFile"
-
-#rm -f $logFile
+---
+#------------------------------------------------------------------------------
+# Description: Playbook to perform 'yum update' on selected hosts.
+# NOTE: This playbook will also reboot hosts if kernel is updated.
+#------------------------------------------------------------------------------
+- name: Performing yum update on host(s)
+hosts: group1
+become: yes
+any_errors_fatal: false
+##########################################################
+# Send notification email at start of change to app teams
+##########################################################
+pre_tasks:
+- mail:
+subject: 'OS patching for {{ ansible_hostname }} is beginning now.'
+from: 'svc_cls@{{ ansible_fqdn }}'
+body: 'Automated OS patching for {{ ansible_hostname }} is beginning now.'
+to: '{{ app_email }}'
+charset: utf8
+delegate_to: localhost
+tags: mail
+#########################################################
+# Execute update procedures
+#########################################################
+roles:
+- { role: pre_update, become: yes }
+- { role: yum_update, become: yes }
+- { role: post_update, become: yes }
+##########################################################
+# Send notifiction of completion
+##########################################################
+post_tasks:
+- mail:
+subject: 'OS patching for {{ ansible_hostname }} has completed.'
+from: 'svc_cls@{{ ansible_fqdn }}'
+body: "Automated OS patching for {{ ansible_hostname }} has completed."
+to: '{{ app_email }}'
+charset: utf8
+delegate_to: localhost
+tags: mail
+- name: Performing yum update on host(s)
+hosts: group2
+become: yes
+any_errors_fatal: false
+##########################################################
+# Send notification email at start of change to app teams
+##########################################################
+pre_tasks:
+- mail:
+subject: 'OS patching for {{ ansible_hostname }} is beginning now.'
+from: 'svc_cls@{{ ansible_fqdn }}'
+body: 'Automated OS patching for {{ ansible_hostname }} is beginning now.'
+to: '{{ app_email }}'
+charset: utf8
+delegate_to: localhost
+tags: mailAUTOMATION OF CENTOS 7 OPERATING SYSTEM PATCHING 30
+#########################################################
+# Execute update procedures
+#########################################################
+roles:
+- { role: pre_update, become: yes }
+- { role: yum_update, become: yes }
+- { role: post_update, become: yes }
+##########################################################
+# Send notifiction of completion
+##########################################################
+post_tasks:
+- mail:
+subject: 'OS patching for {{ ansible_hostname }} has completed.'
+from: 'svc_cls@{{ ansible_fqdn }}'
+body: "Automated OS patching for {{ ansible_hostname }} has completed."
+to: '{{ app_email }}'
+charset: utf8
+delegate_to: localhost
+tags: mail
+- name: Performing yum update on host(s)
+hosts: noreboot
+become: yes
+any_errors_fatal: false
+##########################################################
+# Send notification email at start of change to app teams
+##########################################################
+pre_tasks:
+- mail:
+subject: 'OS patching for {{ ansible_hostname }} is beginning now.'
+from: 'svc_cls@{{ ansible_fqdn }}'
+body: 'Automated OS patching for {{ ansible_hostname }} is beginning now.'
+to: '{{ app_email }}'
+charset: utf8
+delegate_to: localhost
+tags: mail
+#########################################################
+# Execute update procedures
+#########################################################
+roles:
+- { role: pre_update, become: yes }
+- { role: yum_update, become: yes }
+- { role: post_update, become: yes }
+##########################################################
+# Send notifiction of completion
+##########################################################
+post_tasks:
+- mail:
+subject: 'OS patching for {{ ansible_hostname }} has completed.'
+from: 'svc_cls@{{ ansible_fqdn }}'
+body: "Automated OS patching for {{ ansible_hostname }} has completed."
+to: '{{ app_email }}'
+charset: utf8
+delegate_to: localhost
+tags: mail
+- name: Performing yum update on satellite servers
+hosts: satellite
+become: yes
+any_errors_fatal: false
+##########################################################
+# Send notification email at start of change to app teams
+##########################################################AUTOMATION OF CENTOS 7 OPERATING SYSTEM PATCHING 31
+pre_tasks:
+- mail:
+subject: 'OS patching for {{ ansible_hostname }} is beginning now.'
+from: 'svc_cls@{{ ansible_fqdn }}'
+body: 'Automated OS patching for {{ ansible_hostname }} is beginning now.'
+to: '{{ app_email }}'
+charset: utf8
+delegate_to: localhost
+tags: mail
+#########################################################
+# Execute update procedures
+#########################################################
+roles:
+- { role: pre_update, become: yes }
+- { role: yum_noreboot, become: yes }
+- { role: post_update, become: yes }
+##########################################################
+# Send notifiction of completion
+##########################################################
+post_tasks:
+- mail:
+subject: 'OS patching for {{ ansible_hostname }} has completed.'
+from: 'svc_cls@{{ ansible_fqdn }}'
+body: "Automated OS patching for {{ ansible_hostname }} has completed."
+to: '{{ app_email }}'
+charset: utf8
+delegate_to: localhost
+tags: mail
 ```
 
 ### Roles
