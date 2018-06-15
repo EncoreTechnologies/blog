@@ -18,13 +18,13 @@ type = "post"
 
 # Status Report
 
-With basic patching and reboots automated, a patching session for application environments without any special pre-patching and post-patching activities was reduced from 20 minutes per server, down to 6 minutes per server.  This reclamation of time was a welcome improvement to the patcing team, who did most of their patching on evening and weekends (while still spending time in the office during normal business hours).
+With basic patching and reboots automated, a patching session for application environments without any special pre-patching and post-patching activities was reduced from 20 minutes per server, down to 6 minutes per server.  This reclamation of time was a welcome improvement to the team, who did most of their patching on evening and weekends (while still spending time in the office during normal business hours).
 
 Having both proven the concept and begun reaping the benefits of just one layer of patching automation, we were carried forward into automating all the standard pre- and post-patching activities every server in every environment was subject to.
 
 ## Phase Two - Automate Standard Pre- and Post-patcing Activities
 
-The second phase of the project centered around automating a standardized set of pre-patching and post-patching activitites that were  universal to all application envionments.  We found there was little to do for standard pre-patching that wasn't already addressed in  Phase One.  Post-patching tasks, such as compiling a list of errata/patches installed, checking server uptime and emailing a           notification to application teams that patching had completely were established as a standard requirement, and required executing      directly on the remote hosts, not from the Ansible control node.
+The second phase of the project centered around automating a standardized set of pre-patching and post-patching activitites that were  universal to all application envionments.  We found there was little to do for standard pre-patching that wasn't already addressed in  Phase One.  Post-patching tasks, such as compiling a list of errata/patches installed, checking server uptime and emailing a           notification to application teams that patching had completed were established as a standard requirement, and required executing      directly on the remote hosts, not from the Ansible control node.
 
 Before significant development could begin, a foundational directory structure needed to be defined.  Each remote host managed by      Ansible has the following directory tree, which corresponds to the home directory of the service account Ansible runs as.
 
@@ -47,8 +47,6 @@ snowFlake="/opt/home/svc_cls/env_verify.sh" # snowFlake refers to the environmen
 */opt/home/svc_cls/post_update.sh*
 ```
 #!/bin/bash
-# @author Brian Alcorn <brian.alcorn@encore.tech>
-# @date 2017-10-10
 # @brief script that runs at the end of patching (post-reboot if reboot is
 #        required) that checks uptime, running kernel, prints latest update
 #        actions, and performs various system checks defined for a given

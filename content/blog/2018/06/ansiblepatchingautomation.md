@@ -14,7 +14,7 @@ type = "post"
 
 # History
 
-Around a year ago, we began working with a customer who's Red Hat Enterprise Linux (RHEL) 6 and 7 OS patching process was being conducted manually.  This required highly skilled administrators focused solely on patching.  Documentation was eschewed in favor of tribal knowledge and manual command entry at the command line presented moderate to high risk during server patching.  Some of the involved environments included the handling of Personally Identifiable Information (PII) as well as data and information subject to Payment Card Industry (PCI) compliance requirements.
+Around a year ago, we began working with a customer whose Red Hat Enterprise Linux (RHEL) 6 and 7 OS patching process was being conducted manually.  This required highly skilled administrators focused solely on patching.  Documentation was eschewed in favor of tribal knowledge and manual command entry at the command line presented moderate to high risk during server patching.  Some of the involved environments included the handling of Personally Identifiable Information (PII) as well as data and information subject to Payment Card Industry (PCI) compliance requirements.
 
 [PCI Security Standards Council](https://www.pcisecuritystandards.org/documents/Prioritized-Approach-for-PCI_DSS-v3_2.pdf) states:
 
@@ -36,7 +36,7 @@ Implementation was carried out in three phases:
 
 ## Phase One - Automate Basic Patching and Endpoint Reboots
 
-The first phase of the project focused on the installation and configuration of Ansible on a control node, as well as developing the core patch installation and reboot functionality.  Automation of patch installation and reboots, without any change to pre- and post-patching activity processes saw an immediate benefit of speedier path installation as well as a marked reduction in human errors being introduced.
+The first phase of the project focused on the installation and configuration of Ansible on a control node, as well as developing the core patch installation and reboot functionality.  Automation of patch installation and reboots, without any change to pre- and post-patching activity processes saw an immediate benefit of speedier patch installation as well as a marked reduction in human errors being introduced.
 
 Before development of patching automation could begin in earnest, a foundational directory structure needed to be established for Ansible.  Following is a visual representation:
 
