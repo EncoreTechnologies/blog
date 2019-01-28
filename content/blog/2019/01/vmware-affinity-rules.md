@@ -2,7 +2,7 @@
 author = "Bradley Bishop"
 author_url = "https://github.com/bishopbm1"
 categories = ["Bradley Bishop", "VMware", "pyVmomi", "Python", "Afinity Rule", "automation"]
-date = "2017-10-19"
+date = "2019-01-28"
 description = "Automated addition of VMware VM to Host Affinity Rules"
 linktitle = ""
 title = "Automated addition of VMware VM to Host Affinity Rules"
@@ -12,11 +12,16 @@ type = "post"
 
 # Background
 
-VMware Affinity rules can solve many issues in a virtualized environment with out the need to create different clusters or datacenters to separate Virtual Mchines. The specific need that we at Encore had for this was that when we were running some automation tasks, if the VM was migrated to a different Host due to a vMotion our automation tasks would hang and fail.
+VMware Affinity rules can solve many issues in a virtualized environment with out the need to create different clusters or datacenters to separate Virtual Machines. The specific need that we at Encore had for this was that when a vm is being cloned, if the VM was migrated to a different Host due to a vMotion, the custom spec with Kickstart files or Autounattended Syspreps would fail.
 
 This was a random error that would only happened when vCenter or a host was overloaded. We didn't want to turn off the vMotion so we needed to find a different solution to keep our VMs on the same host during the automation task. We were able to do this using VM to Host Affinity rules and we were able to automate the process with the usage of pyVmomi.
 
-We have published and action for affinity rules to an open source [StackStorm pack](https://github.com/StackStorm-Exchange/stackstorm-vsphere) to give the community an automated way to accomplish everything we will discuss below. You can go to the link to learn more about [StackStorm](https://stackstorm.com/).
+We have published an action for creating affinity rules to an open source [StackStorm pack](https://github.com/StackStorm-Exchange/stackstorm-vsphere) to give the community an automated way to accomplish everything we will discuss below. You can go to the link to learn more about [StackStorm](https://stackstorm.com/).
+
+Running an action to create Affinity Rules in StackStorm is as easy as:
+```bash
+st2 run vsphere.affinity_rule_create cluster_name="test-cluster" vm_names="test-vm1","test-vm2" host_names="test-host1","test-host2" rule_name="test-rule"
+```
 
 # Setup
 
