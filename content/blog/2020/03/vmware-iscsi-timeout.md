@@ -8,7 +8,7 @@ featured = ""
 featuredalt = ""
 featuredpath = ""
 linktitle = ""
-title = "Change iSCSI LoginTimeout with PowerCLI"
+title = "Changing iSCSI LoginTimeout with PowerCLI"
 type = "post"
 
 +++
