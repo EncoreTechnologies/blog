@@ -94,7 +94,32 @@ write-host "INFO: Script completed"
 
 Example output of script run:
 
-![Example Run](/img/2020/03/script_example_run.png)
+```
+./Set-ScsiHBALoginTimeout.ps1 -vcenter 'vcenter.fqdn.tld' -user 'domain\user' -pass 'password' -timeout_sec 5
+INFO: Starting process to change LoginTimeout
+INFO: Host: vmh01.domain.tld HBA: vmhba64 changed LoginTimeout in 5 seconds.
+INFO: Host: vmh02.domain.tld HBA: vmhba64 changed LoginTimeout in 5 seconds.
+INFO: Host: vmh03.domain.tld HBA: vmhba64 changed LoginTimeout in 5 seconds.
+INFO: Host: vmh04.domain.tld HBA: vmhba64 changed LoginTimeout in 5 seconds.
+INFO: Host: vmh05.domain.tld HBA: vmhba64 changed LoginTimeout in 5 seconds.
+INFO: Host: vmh06.domain.tld HBA: vmhba64 changed LoginTimeout in 5 seconds.
+INFO: Host: vmh07.domain.tld HBA: vmhba64 changed LoginTimeout in 5 seconds.
+INFO: Host: vmh08.domain.tld HBA: vmhba64 changed LoginTimeout in 5 seconds.
+INFO: Host: vmh09.domain.tld HBA: vmhba64 changed LoginTimeout in 5 seconds.
+INFO: Host: vmh10.domain.tld HBA: vmhba64 changed LoginTimeout in 5 seconds.
+INFO: Host: vmh11.domain.tld HBA: vmhba64 changed LoginTimeout in 5 seconds.
+INFO: Host: vmh13.domain.tld HBA: vmhba65 changed LoginTimeout in 5 seconds.
+INFO: Host: vmh13.domain.tld HBA: vmhba32 changed LoginTimeout in 5 seconds.
+INFO: Host: vmh13.domain.tld HBA: vmhba33 changed LoginTimeout in 5 seconds.
+INFO: Host: vmh14.domain.tld HBA: vmhba65 changed LoginTimeout in 5 seconds.
+INFO: Host: vmh14.domain.tld HBA: vmhba32 changed LoginTimeout in 5 seconds.
+INFO: Host: vmh14.domain.tld HBA: vmhba33 changed LoginTimeout in 5 seconds.
+INFO: Host: vmh15.domain.tld HBA: vmhba67 changed LoginTimeout in 5 seconds.
+INFO: Host: vmh16.domain.tld HBA: vmhba67 changed LoginTimeout in 5 seconds.
+INFO: Host: vmh17.domain.tld HBA: vmhba65 changed LoginTimeout in 5 seconds.
+INFO: Host: vmh18.domain.tld HBA: vmhba65 changed LoginTimeout in 5 seconds.
+INFO: Script completed
+```
 
 ## Checking current LoginTimeout value
 
