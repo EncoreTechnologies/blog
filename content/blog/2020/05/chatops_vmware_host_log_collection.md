@@ -13,7 +13,7 @@ type = "post"
 
 +++
 
-In this post we will be explaining how we have created a chatops workflow that enables us to upload VMware ESXi log bundles directly to a VMware support case from our chat client of choice. The code that makes all of this work is at the bottom of this article.
+In this post we will be explaining how we have created a chatops workflow that enables us to upload VMWare ESXi log bundles directly to a VMWare support case from our chat client of choice. The code that makes all of this work is at the bottom of this article.
 
 ## Chatops Introduction
 
@@ -21,31 +21,31 @@ For the those who have never heard of chatops before; To me, it means the abilit
 
 There are a few things I find very cool about Chatops:
 - It allows administrators who don't understand code to leverage automation others have written
-- It enables us to do certain tasks from wherever we might be, on whatever device we have available. Ever wish you could upload vmware logs from your cell phone after getting that email from support when you are out of the office?
+- It enables us to do certain tasks from wherever we might be, on whatever device we have available. Ever wish you could upload VMWare logs from your cell phone after getting that email from support when you are out of the office?
 - It can be a huge time saver! No need to get on your laptop so you can 2FA into an environment. You'd spend 10 minutes logging in to do a 5 minute job.
 
 ## Background
 
-Anyone who has ran a VMware environment for some time knows that the first thing VMware support will ask when you open a case is to upload a log bundle to them. Depending on the nature of the case you might need to extract log bundles from *ALL* of the hosts, in other cases you might need to extract a log bundle from the same host multiple times after a specific event has occured.
+Anyone who has ran a VMWare environment for some time knows that the first thing VMWare support will ask when you open a case is to upload a log bundle to them. Depending on the nature of the case you might need to extract log bundles from *ALL* of the hosts, in other cases you might need to extract a log bundle from the same host multiple times after a specific event has occurred.
 
 To collect a log bundle usually means:
 - Hopping into the jumpbox for the specific environment
 - Logging into the host(s) via SSH or logging into the vCenter console to generate the bundle
-- Uploading that bundle from your download location up to VMware support.
+- Uploading that bundle from your download location up to VMWare support.
 
 Not too challenging but definitely time consuming - and definitely something we can help automate!
 
 ## Overview of Chatops Action
 
-From a chatbops perspective this is what the action looks like:
+From a chatops perspective this is what the action looks like:
 
 ![help](/img/2020/05/slack_help_command.png)
 
-Example of a run where I collect a log bundle from my-vmware-host.fqdn.tld and upload it to case #12345678901:
+Example of a run where I collect a log bundle from my-VMWare-host.fqdn.tld and upload it to case #12345678901:
 
 ![help](/img/2020/05/logupload_full.png)
 
-You might find it interesting that Dot Matrix (stackstorm) immediately queued my action when I called it, and it took about ~6 minutes for it to complete. You can see the timestamp of `05-06-2020@15:20` in the log bundle name, the time at which it was initiated (3:20PM). Stackstorm took less than a minute to get from slack to the vmware host!
+You might find it interesting that Dot Matrix (Stackstorm) immediately queued my action when I called it, and it took about ~6 minutes for it to complete. You can see the timestamp of `05-06-2020@15:20` in the log bundle name, the time at which it was initiated (3:20PM). Stackstorm took less than a minute to get from slack to the VMWare host!
 
 ## Chatops Tool Stack
 
@@ -57,20 +57,20 @@ To create this chatops action we are using a combination of tools, nearly the en
   - Executing Bolt task
   - Populates environment variables for use in Bolt task
 - Puppet Bolt - https://puppet.com/docs/bolt/latest/bolt.html
-  - Running the actual code that connects to the vmware host, generates the bundle, uploads bundle to vmware support
+  - Running the actual code that connects to the VMWare host, generates the bundle, uploads bundle to VMWare support
 - Slack - https://slack.com/
-  - Slack is our chat platform of choice. It has very nice integrations available for Chatops.
+  - Slack is our chat platform of choice. It has very nice integration available for Chatops.
 
 ## Deep Dive
 
-If you're still reading by now I assume you are ready to see some code on how we put this together! To make things easier for you the general idea is: `shell script -> bolt task -> stackstorm action -> stackstorm workflow -> stackstorm alias`
+If you're still reading by now I assume you are ready to see some code on how we put this together! To make things easier for you the general idea is: `shell script -> bolt task -> Stackstorm action -> Stackstorm workflow -> Stackstorm alias`
 
 The steps involved in this shell script are:
 
-- Generate and download a log bundle via API call at `https://ESXHostnameOrIPAddress/cgi-bin/vm-support.cgi` Explained here: https://kb.vmware.com/s/article/1010705
-- Initiate an SFTP connection to vmware support
+- Generate and download a log bundle via API call at `https://ESXHostnameOrIPAddress/cgi-bin/vm-support.cgi` Explained here: https://kb.VMWare.com/s/article/1010705
+- Initiate an SFTP connection to VMWare support
 - Create a directory that matches our support case number.
-  - Unfortunately VMware does not give us `ls` command access on the sftp server so we can't check if this exists already, thankfully it's not show stopping if it does already exist.
+  - Unfortunately VMWare does not give us `ls` command access on the SFTP server so we can't check if this exists already, thankfully it's not show stopping if it does already exist.
 - Upload our log bundle to said directory
 - Clean up temporary bundle download location
 
@@ -294,7 +294,7 @@ tasks:
           - fail
 ```
 
-The Stackstorm alias is how you configure what occurs in slack in reguards to the Stackstorm workflow above.
+The Stackstorm alias is how you configure what occurs in slack in regards to the Stackstorm workflow above.
 vmware_host_collect_and_upload_log_bundle.yaml:
 
 ```
