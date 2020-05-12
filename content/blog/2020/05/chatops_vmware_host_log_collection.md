@@ -1,7 +1,7 @@
 +++
 author = "Greg Perry"
 author_url = "https://github.com/gsperry2011"
-categories = ["Greg Perry", "Encore", "VMware", "ESXi", "logs", "chatops", "Stackstorm", "Bolt", "puppet"]
+categories = ["Greg Perry", "Encore", "VMware", "ESXi", "logs", "chatops", "StackStorm", "Bolt", "puppet"]
 date = "2020-05-07"
 description = "How Encore is Utilizing Chatops for VMWare Support Cases"
 featured = ""
@@ -45,13 +45,13 @@ Example of a run where I collect a log bundle from my-VMWare-host.fqdn.tld and u
 
 ![help](/img/2020/05/logupload_full.png)
 
-You might find it interesting that Dot Matrix (Stackstorm) immediately queued my action when I called it, and it took about ~6 minutes for it to complete. You can see the timestamp of `05-06-2020@15:20` in the log bundle name, the time at which it was initiated (3:20PM). Stackstorm took less than a minute to get from slack to the VMWare host!
+You might find it interesting that Dot Matrix (StackStorm) immediately queued my action when I called it, and it took about ~6 minutes for it to complete. You can see the timestamp of `05-06-2020@15:20` in the log bundle name, the time at which it was initiated (3:20PM). StackStorm took less than a minute to get from slack to the VMWare host!
 
 ## Chatops Tool Stack
 
 To create this chatops action we are using a combination of tools, nearly the entire list is open source software and can be downloaded for free:
 
-- Stackstorm - https://stackstorm.com/ 
+- StackStorm - https://stackstorm.com/ 
   - Interpreting chatops commands entered in slack
   - Posting the results of the workflow to the caller via slack
   - Executing Bolt task
@@ -63,7 +63,7 @@ To create this chatops action we are using a combination of tools, nearly the en
 
 ## Deep Dive
 
-If you're still reading by now I assume you are ready to see some code on how we put this together! To make things easier for you the general idea is: `shell script -> bolt task -> Stackstorm action -> Stackstorm workflow -> Stackstorm alias`
+If you're still reading by now I assume you are ready to see some code on how we put this together! To make things easier for you the general idea is: `shell script -> bolt task -> StackStorm action -> StackStorm workflow -> StackStorm alias`
 
 The steps involved in this shell script are:
 
@@ -209,12 +209,12 @@ vmware_generate_and_upload_log_bundle.json
 }
 ```
 
-### Stackstorm Code
+### StackStorm Code
 
-Now that we have a functional Bolt task to do want we want, we can simply roll it into a Stackstorm workflow that can be called via slack.
+Now that we have a functional Bolt task to do want we want, we can simply roll it into a StackStorm workflow that can be called via slack.
 
 
-This Stackstorm action calls the bolt task above: vmware_host_collect_and_upload_log_bundle.yaml
+This StackStorm action calls the bolt task above: vmware_host_collect_and_upload_log_bundle.yaml
 
 ```
 ---
@@ -223,7 +223,7 @@ enabled: true
 runner_type: orquesta
 entry_point: workflows/vmware_host_collect_and_upload_log_bundle.yaml
 name: vmware_host_collect_and_upload_log_bundle
-pack: encore
+pack: vmware
 parameters:
   vmware_sr_number:
     type: string
@@ -242,7 +242,7 @@ parameters:
 
 
 
-This Stackstorm workflow calls the Stackstorm action above: vmware_host_collect_and_upload_log_bundle.yaml
+This StackStorm workflow calls the StackStorm action above: vmware_host_collect_and_upload_log_bundle.yaml
 
 One of the key things here is that environment variables are being populated for the usernames and passwords being used. This means that they are NOT visible on the system running this code.
 ```
@@ -266,11 +266,11 @@ output:
 
 tasks:
   plan_run:
-    action: encore.bolt_plan
+    action: vmware.bolt_plan
     input:
       server_fqdn: "{{ ctx().download_server }} "
       os_type: "linux"
-      plan: "encore_rp::vmware_generate_and_upload_log_bundle"
+      plan: "vmware_generate_and_upload_log_bundle"
       params:
         esx_host: "{{ ctx().esx_host }}"
         vmware_sr_number: "{{ ctx().vmware_sr_number }}"
@@ -294,15 +294,15 @@ tasks:
           - fail
 ```
 
-The Stackstorm alias is how you configure what occurs in slack in regards to the Stackstorm workflow above.
+The StackStorm alias is how you configure what occurs in slack in regards to the StackStorm workflow above.
 vmware_host_collect_and_upload_log_bundle.yaml:
 
 ```
 ---
 name: vmware_host_collect_and_upload_log_bundle
-pack: encore
+pack: vmware
 description: Uploads specified VMware host log bundle to (11 digit) VMware ticket number.
-action_ref: encore.vmware_host_collect_and_upload_log_bundle
+action_ref: vmware.vmware_host_collect_and_upload_log_bundle
 
 formats:
   - "vmware host log upload {{ esx_host }} {{ vmware_sr_number }}"
@@ -318,5 +318,4 @@ result:
       {{ execution.result.output.action_error }}
     {% endif %}
 ```
-
 
