@@ -15,13 +15,13 @@ type = "post"
 
 ## Migrate Citrix Policies from XenApp 6.5 to >7.6
 
-In this post I will outline the process I used to overcome the limitations of existing Citrix policy migrating tools. Per Citrix, there is no direct patch to migrate versions 6.5 to 7.7 or above, you must first install and migrate to 7.6, then do an in-place upgrade to the desired version. ( source: https://docs.citrix.com/en-us/xenapp-and-xendesktop/7-15-ltsr/upgrade-migrate/xenapp-worker-upgrade.html ). Unfortunatly for me, I discovered this only after my brand new 7.19 farm was stood up. Before tearing it all down, I wanted to dig a bit deeper to see if there was a better way. If you are in the same boat, or if you would like to try a more streamlined approach, the following steps will help you save some time. They are quick and relatively painless. You will need to use and modify Powershell modules. If you are uncomfortable with PowerShell this is a great learning opportunity. I will break the process down into 4 parts. 
+In this post I will outline the process I used to overcome the limitations of existing Citrix policy migrating tools. Per Citrix, there is no direct patch to migrate versions 6.5 to 7.7 or above, you must first install and migrate to 7.6, then do an in-place upgrade to the desired version. (source: [docs.citrix.com](https://docs.citrix.com/en-us/xenapp-and-xendesktop/7-15-ltsr/upgrade-migrate/xenapp-worker-upgrade.html)). Unfortunatly, many discover this only after their brand new 7.7 or higher farm is stood up. If you are in a simular situation, or if you would like to try a more streamlined approach, the procedure below will help you save some time. It is quick and relatively painless, however, you will need to use and modify Powershell modules. If you are uncomfortable with PowerShell this is a great learning opportunity. The process is broken down into 4 parts below. 
 
 # Export
-1.	Download the Citrix Migration Tool from the xenapp 7.6 download site: https://www.citrix.com/downloads/xenapp/product-software/xenapp-76-enterprise-edition.html
+1.	Download the Citrix Migration Tool from the xenapp 7.6 download page: [Citrix 7.6 Downloads](https://www.citrix.com/downloads/xenapp/product-software/xenapp-76-enterprise-edition.html)
      * Important note, be sure to download the migration "scripts", not the migration "tool". The files we need are ReadIMA.zip and ImportFMA.zip. If you see XDExport.zip and XDImport.zip, you have the the actual tool and it will not work. 
 	 ![migration_script_download](/img/2020/05/migration_script_download.png)
-2.	On a 6.5 farm server ensure you have windows management framework 3 installed, I used wmf 4. You can download that here: https://www.microsoft.com/en-us/download/details.aspx?id=40855
+2.	On a 6.5 farm server ensure you have windows management framework 3 installed, I used wmf 4. You can download here: [Microsoft WMF 4.0](https://www.microsoft.com/en-us/download/details.aspx?id=40855)
 3.	Extract ReadIMA.zip to c:\temp
 4.	Open and administrator command prompt and execute the following:
      * Note if you get security warnings press "R" to ignore and load scripts
@@ -138,22 +138,31 @@ ls  | where name -eq "HCG Best Practices”
 
 3.  Examine the output. 
     ![merge_conflict_compare](/img/2020/05/merge_conflict_compare.png)
+
 4.  Note the priority on the same policy is different between the user and computer policies. We need to adjust one of these so that it matches the other. In this c ase I want the priority to be 4.
 Since ware already in the computer directory, we can change to the “HCG Best Practices" policy and execute the following commands 
     * `cd ".\HCG Best Practices"` 
     * If you wish to switch to the user policy run: `cd "..\user\HCG Best Practices"`
     * Then run where the priority value matches the other policy: `Set-ItemProperty . -Name Priority -value 4`
-4.	Refresh the policy view. If you see your policies you are done with this step. Otherwise you may need to repeat this process for the next policy mentioned in the error message. 
 
+5.	Refresh the policy view. If you see your policies you are done with this step. Otherwise you may need to repeat this process for the next policy mentioned in the error message. 
 
 # Verify Policy Migration 
-If you followed all of the steps from the export and import process you should have 2 new files. 
-On the old server: "c:\temp\ctxpolicy-old.txt"
-On the new server "c:\temp\ctxpolicy-new.txt"
-The diff command on windows is not great. I will be using the open source tool “WinMerge” to diff these files.
-Open these files in Winmerge (https://sourceforge.net/projects/winmerge/) and it will highlight any discrepancies between the old/new Citrix environments. 
-It is important to point out that this is not a perfect process. There will be differences due to the varying versions of powershell and Citrix snap ins. You will likely some extra lines on the new farm. These can usually be ignored but use your best judgement. 
-If all the policies look correct you can declare success. If some policies are incorrect, take a closer look in Citrix Studio and fix or add as necessary. In my case I had 160+ policies and did not need to recreate any. 
+1. If you followed all of the steps from the export and import process you should have 2 new files. 
+    * On the old server: "c:\temp\ctxpolicy-old.txt"
+    * On the new server: "c:\temp\ctxpolicy-new.txt"
+
+2. Use your favorite comparison tool. I recommend using the open source tool “WinMerge” to diff these files as the diff command in windows is less than optimal. 
+    * Open these files in Winmerge (https://sourceforge.net/projects/winmerge/) and it will highlight any discrepancies between the old and new Citrix environments. 
+    * It is important to note that this is not a perfect process. There will be differences due to the varying versions of powershell and Citrix snap ins. You will likely some extra lines on the new farm. These can usually be ignored but use your best judgement. 
+
+    WinMerge Example:
+	![merge_conflict_compare](/img/2020/05/winmerge_example.png)
+
+3. If the policies match you are ready to move on environment build out. If some policies are incorrect, take a closer look in Citrix Studio and fix or add as necessary. In my case I had 160+ policies and did not need to recreate any. 
 
 ## Related links 
-* Citrix migrate tool doc: https://docs.citrix.com/en-us/xenapp-and-xendesktop/7-15-ltsr/upgrade-migrate/xenapp-worker-upgrade.html
+* [Citrix Migration Tool Documentation](https://docs.citrix.com/en-us/xenapp-and-xendesktop/7-15-ltsr/upgrade-migrate/xenapp-worker-upgrade.html)
+* [Citrix Migration Tool](https://www.citrix.com/downloads/xenapp/product-software/xenapp-76-enterprise-edition.html)
+* [WinMerge](https://winmerge.org/?lang=en)
+* [Microsoft Windows Management Framework 4.0](https://www.microsoft.com/en-us/download/details.aspx?id=40855)
