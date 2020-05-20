@@ -118,8 +118,9 @@ foreach ($p in $userpolicies) {
 # Resolve Merge Discrepancies with Citrix Studio
 Citrix 7.xx Studio handles policy filtering in a different manner than 6.5. Separate user and computer policies no longer exist inside the GUI. Instead policies use filters that can be applied to users and computers. After an import, studio attempts to merge user policies with computer policies of the same name and applies filters for the various users and computers. Read more on this here https://support.citrix.com/article/CTX138509. 
 1.	Open Citrix studio and click on policies, If you added several policies, there is a good chance you will be presented with the below screen 
-    *	Note the name of the policy given in the error message. There is no priority interference with the “unfiltered” policy as indicated in the message. While this message is misleading, it does give us a valuable bit of information, the other policy mentioned is called “HCG Best Practices”. Make note of this policy name. 
+    *	Note the name of the policy given in the error message. There is no priority interference with the “unfiltered” policy as indicated in the message. While this message is misleading, it does give us a valuable bit of information, the other policy mentioned is called “Random-Citrix-Policy”. Make note of this policy name. 
     ![ctx_studio_error](/img/2020/05/ctx_studio_error.png)
+    * Please note: In these examples I am censoring the actual policy name, and using a made up name, 'Random-Citrix-Policy' for privacy. 
 
 2.	To resolve this. Return to your admin Powershell session and execute the below commands. Use the policy names from your environment in the 'where' filters. 
 
@@ -128,9 +129,9 @@ asnp Citrix*
 New-PSDrive Site -PSProvider CitrixGroupPolicy -Root \ -Controller localhost
 cd Site:\User
 ls  | where name -eq "unfiltered”
-ls  | where name -eq "HCG Best Practices”
+ls  | where name -eq "Random-Citrix-Policy”
 cd ..\computer
-ls  | where name -eq "HCG Best Practices”
+ls  | where name -eq "Random-Citrix-Policy”
 ls  | where name -eq "unfiltered”
  ```
 
@@ -138,9 +139,9 @@ ls  | where name -eq "unfiltered”
     ![merge_conflict_compare](/img/2020/05/merge_conflict_compare.png)
 
 4.  Note the priority on the same policy is different between the user and computer policies. The user policy priority is 4, and the computer is 1. We need to adjust one of these so that it matches the other. In this case I want the priority to be 4.
-Since ware already in the computer directory, we can change to the “HCG Best Practices" policy and execute the following commands 
-    * `cd ".\HCG Best Practices"` 
-    * If you wish to switch to the user policy run: `cd "..\user\HCG Best Practices"`
+Since ware already in the computer directory, we can change to the “Random-Citrix-Policy" policy and execute the following commands 
+    * `cd ".\Random-Citrix-Policy"` 
+    * If you wish to switch to the user policy run: `cd "..\user\Random-Citrix-Policy"`
     * Then run `Set-ItemProperty . -Name Priority -value 4`. Replace the '-value' property with the priority value that is appropriate to your environment.
 
 5.	Refresh the policy view in Citrix Studio. If you see your policies you are done with this step. Otherwise you may need to repeat this process for the next policy mentioned in the error message. 
