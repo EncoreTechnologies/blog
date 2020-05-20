@@ -2,7 +2,7 @@
 author = "Scott Caster	"
 author_url = "https://github.com/scaster513"
 categories = ["Scott Caster", "Citrix", "Policy", "Migrate"]
-date = "2020-05-19"
+date = "2020-05-20"
 description = "Simple process for policy migration from xenapp 6.5 to Citrix 7.xx"
 featured = ""
 featuredalt = ""
@@ -120,7 +120,7 @@ Citrix 7.xx Studio handles policy filtering in a different manner than 6.5. Sepa
 1.	Open Citrix studio and click on policies, If you added several policies, there is a good chance you will be presented with the below screen 
     *	Note the name of the policy given in the error message. There is no priority interference with the “unfiltered” policy as indicated in the message. While this message is misleading, it does give us a valuable bit of information, the other policy mentioned is called “Random-Citrix-Policy”. Make note of this policy name. 
     ![ctx_studio_error](/img/2020/05/ctx_studio_error.png)
-    * Please note: In these examples I am censoring the actual policy name, and using a made up name, 'Random-Citrix-Policy' for privacy. 
+    * Please note: In these examples I am censoring the actual policy name and using a made up name, 'Random-Citrix-Policy' for privacy. 
 
 2.	To resolve this. Return to your admin Powershell session and execute the below commands. Use the policy names from your environment in the 'where' filters. 
 
