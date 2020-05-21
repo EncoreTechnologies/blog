@@ -38,9 +38,9 @@ Export-Policy -XmlOutputFile .\policies.xml -LogFile .\policy-export.log
 
 ```powershell
 if (!(Get-PSDrive | where name -eq LocalFarmGpo)) { 
-asnp citrix*
-import-module .\exportpolicy.psd1
-import-module .\exportxafarm.psd1
+    asnp citrix*
+    Import-Module .\exportpolicy.psd1
+    Import-Module .\exportxafarm.psd1
 }
 cd LocalFarmGpo:\
 $userpolicies=Get-ChildItem .\User |Select-Object name
