@@ -56,6 +56,8 @@ foreach ($p in $userpolicies) {
 
 
 # Import
+In order to complete the import we will utilize the `Import-Policy` command which is included in the `ImportPolicy.psm1` module. However, before we run it we need to fix two issues. First, it is still using the depreciated `[System.Reflection.Assembly]::LoadWithPartialName` method to load the plugin. We will use the simpler and more modern `Add-PSSnapin` cmdlet. Second, Citrix has changed their group policy snapin name from `Citrix.GroupPolicy.PowerShellProvider` to `Citrix.Common.GroupPolicy`. Since `Citrix.Common.GroupPolicy` is included by default in the install, we will add a simple check to see if it is loaded, if not we will load all installed Citrix Snapins. It could be a bit more refined, but this works for our purposes. 
+
 1.	On the 7.xx delivery controller, ensure the Citrix Group Policy Management and Powershell snappins are installed. 
 2.	Extract `ImportFMA.zip` to `C:\temp\ImportFMA`
 3.	Right click on the `ImportPolicy.psm1` file, select edit and remove or comment out the below
@@ -76,7 +78,7 @@ foreach ($p in $userpolicies) {
 ```powershell
     if (!$(Get-PSSnapin |where name -Match Citrix.Common.GroupPolicy)) {
         Write-Output "Adding Citrix snap-in"
-        asnp Citrix*
+        Add-PSSnapin Citrix*
     } 
 ```	
 
